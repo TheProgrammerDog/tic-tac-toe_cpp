@@ -13,13 +13,9 @@
 #include <iostream>
 
 int main (int argc, char** argv) {
-  TicTacToe game(3);
-  game.Place(0);
-  game.Place(0);
-  game.Place(0);
-  std::cout << std::endl;
-
+  TicTacToe game(4);
   game.Print();
-  std::cout << game.CheckForWin(0) << std::endl;
+  TicTacToe game2(5);
+  game2.Print();
   return 0;
 }

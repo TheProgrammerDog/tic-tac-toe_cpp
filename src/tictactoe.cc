@@ -65,46 +65,77 @@ Direction IndexToDirection(const unsigned& value) {
 }
 
 TicTacToe::TicTacToe(const unsigned& size) {
+  assert (size > 0 && size < 10);
   matrix_.resize(size);
   for (auto iter = matrix_.begin(); iter != matrix_.end(); ++iter) {
     iter->resize(size);
   }
+  Fill(Value::O);
+}
+
+bool TicTacToe::Run(const bool& player) {
   Fill();
 }
 
-void Run() {
-
-}
-
 void TicTacToe::Place(const bool& player) {
-  unsigned x, y;
-  std::cout << "Introduce x cord: ";
-  std::cin >> x;
-  //system("clear");
-  std::cout << "Introduce y cord: ";
-  std::cin >> y;
-  //system("clear");
-  matrix_[x][y] = BoolToValue(player);
-  std::cout << std::endl;
+  system("clear");
+  std::string x_raw, y_raw;
+  bool correct_input {0};
+  Position pos;
+  while (correct_input == 0) {
+    std::cout << "Introduce x and y cord: ";
+    std::cin >> x_raw >> y_raw;
+    if (!CheckForValidInput(x_raw) || !CheckForValidInput(y_raw)) {
+      std::cout << "invalid input, try again" << std::endl;
+      continue;
+    }
+    unsigned x = static_cast<unsigned>(x_raw[0] - 48);
+    unsigned y = static_cast<unsigned>(y_raw[0] - 48);
+    pos = {x, y};
+    if (CheckForLegalPos(pos)) {
+      correct_input = 1;
+      matrix_[x][y] = BoolToValue(player);
+    }
+    else {
+      std::cout << "Invalid position, try again" << std::endl;
+      continue;
+    }
+  }
+
 }
 
 void TicTacToe::Print() const {
-  for (auto iter_1 = matrix_.begin(); iter_1 != matrix_.end(); ++iter_1) {
-    for (auto iter_2 = iter_1->begin(); iter_2 != iter_1->end(); ++iter_2) {
-      std::cout << ValueToString(*iter_2) << " ";
-    }
-    std::cout << std::endl;
+  std::cout << "    ";
+  for (size_t i = 0; i < matrix_.size(); ++i) {
+    std::cout << i << " ";
   }
+  std::cout << std::endl << "  ┌";
+  for (size_t i = 0; i < matrix_.size() * 2 + 1; ++i) {
+    std::cout << "─";
+  }
+  std::cout << "┐" << std::endl;
+  for (size_t i = 0; i < matrix_.size(); ++i) {
+    std::cout << i << " │ ";
+    for (size_t j = 0; j < matrix_.size(); ++j) {
+      std::cout << ValueToString(matrix_[i][j]) << " ";
+    }
+    std::cout << "│" << std::endl;
+  }
+  std::cout << "  └";
+  for (size_t i = 0; i < matrix_.size() * 2 + 1; ++i) {
+    std::cout << "─";
+  }
+  std::cout << "┘" << std::endl;
 }
 
 Value TicTacToe::GetValueOn(const Position& pos) const {
   return matrix_[pos.first][pos.second];
 }
 
-void TicTacToe::Fill() {
+void TicTacToe::Fill(const Value& value) {
   for (auto iter_1 = matrix_.begin(); iter_1 != matrix_.end(); ++iter_1) {
     for (auto iter_2 = iter_1->begin(); iter_2 != iter_1->end(); ++iter_2) {
-      *iter_2 = Value::Empty;
+      *iter_2 = value;
     }
   }
 }
@@ -153,6 +184,13 @@ bool TicTacToe::CheckForLegalPos(const Position& pos) const {
     return false;
   }
   return true;
+}
+
+bool TicTacToe::CheckForValidInput(const std::string& entry) const {
+  if (entry.size() == 1 && (entry[0] >=48 && entry[0] <= 57)) {
+    return true;
+  }
+  return false;
 }
 
 bool TicTacToe::CheckForWin(const bool& player) const {

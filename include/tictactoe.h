@@ -53,9 +53,10 @@ class TicTacToe {
 
   private:
     std::vector<std::vector<Value>> matrix_;
-    void Fill();
+    void Fill(const Value& value = Value::Empty);
     Position GetNewPos(const Position& pos, const Direction& dir) const;
     bool CheckForLegalPos(const Position& pos) const;
+    bool CheckForValidInput(const std::string& entry) const;
     bool CheckForWin(const bool& player) const;
     unsigned CheckForWinRecursive(const bool& player, 
       const Position& pos, const Direction& dir) const; 
