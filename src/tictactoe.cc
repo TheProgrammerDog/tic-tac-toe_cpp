@@ -83,31 +83,45 @@ bool TicTacToe::Run(const bool& player) {
   system("clear");
   Fill();
   bool turn = player;
+  unsigned turn_number {0};
   while (true) {
-    Turn(turn);
+    Turn(turn, turn_number);
     if (CheckForWin(turn)) {
       system("clear");
       std::cout << "Player: " << player << " wins" << std::endl;
       return turn; // returns who wins
     }
+    ++turn_number;
     turn = !turn; // Change turn
   }
 }
 
-void TicTacToe::Turn(const bool& player) {
+void TicTacToe::Turn(const bool& player, const unsigned& turn_number) {
+  // Set variables
+  bool bad_syntax_bool {0};
+  bool bad_pos_bool {0};
   std::string x_raw, y_raw;
-  bool correct_input {0};
   Position pos;
+
   // Until a correct input
-  while (correct_input == 0) {
+  while (true) {
+    system("clear"); // Clear the screen
+    if (bad_pos_bool) {
+      std::cout << "Invalid position, try again" << std::endl;
+      bad_pos_bool = 0;
+    }
+    else if (bad_syntax_bool) {
+      std::cout << "invalid input, try again" << std::endl;
+      bad_syntax_bool = 0;
+    }
     Print();
-    std::cout << "Player: " << player << "(" 
-      << ValueToString(BoolToValue(player)) << ")" << " turn" << std::endl;
+    std::cout << "turn: " << turn_number << " - Player: " 
+      << ValueToString(BoolToValue(player)) << std::endl;
     std::cout << "Introduce x and y cord: ";
     std::cin >> x_raw >> y_raw;
     // Checks if the input is syntactically correct
     if (!CheckForValidInput(x_raw) || !CheckForValidInput(y_raw)) {
-      std::cout << "invalid input, try again" << std::endl;
+      bad_syntax_bool = 1;
       continue;
     }
     // From char to unsigned
@@ -116,16 +130,15 @@ void TicTacToe::Turn(const bool& player) {
     pos = {x, y};
     
     // Check if the input is inside the matrix
-    if (CheckForLegalPos(pos)) {
-      correct_input = 1;
+    if (CheckForLegalPos(pos) && !(GetValueOn(pos) != Value::Empty)) {
       matrix_[x][y] = BoolToValue(player);
+      break;
     }
     else {
-      std::cout << "Invalid position, try again" << std::endl;
+      bad_pos_bool = 1;
       continue;
     }
   }
-  system("clear");
 }
 
 void TicTacToe::Print() const {

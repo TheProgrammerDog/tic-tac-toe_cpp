@@ -108,14 +108,15 @@ class TicTacToe {
      */
     bool Run(const bool& first = 0);
 
-    /**
-     * @brief Do a turn for a player
-     * Take the input
-     * Writes it on the matrix
-     * 
-     * @param player 
-     */
-    void Turn(const bool& player);
+  /**
+   * @brief Do a turn for a player
+   * Take the input
+   * Writes it on the matrix
+   * 
+   * @param player 
+   * @param turn_number 
+   */
+    void Turn(const bool& player, const unsigned& turn_number);
 
     /**
      * @brief Get the Value on position
