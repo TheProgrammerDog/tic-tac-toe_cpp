@@ -16,12 +16,12 @@
 #include <cstdlib>
 #include <string>
 
-std::string ValuesToString(const Values& value) {
+std::string ValueToString(const Value& value) {
   switch (value) {
-    case Values::X:
+    case Value::X:
       return "X";
       break;
-    case Values::O:
+    case Value::O:
       return "O";
       break;
     default:
@@ -29,42 +29,42 @@ std::string ValuesToString(const Values& value) {
   }
 }
 
-Values BoolToValues(const bool& var) {
+Value BoolToValue(const bool& var) {
   if (var == 1) {
-    return Values::X;
+    return Value::X;
   }
-  return Values::O;
+  return Value::O;
 }
 
-Directions IndexToDirections(const unsigned& value) {
+Direction IndexToDirection(const unsigned& value) {
   switch (value) {
     case 0:
-      return Directions::North;
+      return Direction::North;
       break;
     case 1:
-      return Directions::NorthWest;
+      return Direction::NorthWest;
       break;
     case 2:
-      return Directions::West;
+      return Direction::West;
       break;
     case 3:
-      return Directions::SouthWest;
+      return Direction::SouthWest;
       break;
     case 4:
-      return Directions::South;
+      return Direction::South;
       break;
     case 5:
-      return Directions::SouthEast;
+      return Direction::SouthEast;
       break;
     case 6:
-      return Directions::East;
+      return Direction::East;
       break;
     default:
-      return Directions::NorthEast;
+      return Direction::NorthEast;
   }
 }
 
-TicTacToe::TicTacToe(const unsigned size) {
+TicTacToe::TicTacToe(const unsigned& size) {
   matrix_.resize(size);
   for (auto iter = matrix_.begin(); iter != matrix_.end(); ++iter) {
     iter->resize(size);
@@ -72,7 +72,11 @@ TicTacToe::TicTacToe(const unsigned size) {
   Fill();
 }
 
-void TicTacToe::Place(const bool player) {
+void Run() {
+
+}
+
+void TicTacToe::Place(const bool& player) {
   unsigned x, y;
   std::cout << "Introduce x cord: ";
   std::cin >> x;
@@ -80,32 +84,32 @@ void TicTacToe::Place(const bool player) {
   std::cout << "Introduce y cord: ";
   std::cin >> y;
   //system("clear");
-  matrix_[x][y] = BoolToValues(player);
+  matrix_[x][y] = BoolToValue(player);
   std::cout << std::endl;
 }
 
 void TicTacToe::Print() const {
   for (auto iter_1 = matrix_.begin(); iter_1 != matrix_.end(); ++iter_1) {
     for (auto iter_2 = iter_1->begin(); iter_2 != iter_1->end(); ++iter_2) {
-      std::cout << ValuesToString(*iter_2) << " ";
+      std::cout << ValueToString(*iter_2) << " ";
     }
     std::cout << std::endl;
   }
 }
 
-Values TicTacToe::GetValueOn(const Position& pos) const {
+Value TicTacToe::GetValueOn(const Position& pos) const {
   return matrix_[pos.first][pos.second];
 }
 
 void TicTacToe::Fill() {
   for (auto iter_1 = matrix_.begin(); iter_1 != matrix_.end(); ++iter_1) {
     for (auto iter_2 = iter_1->begin(); iter_2 != iter_1->end(); ++iter_2) {
-      *iter_2 = Values::Empty;
+      *iter_2 = Value::Empty;
     }
   }
 }
 
-Position TicTacToe::GetNewPos(const Position& pos, const Directions& dir) const {
+Position TicTacToe::GetNewPos(const Position& pos, const Direction& dir) const {
   Position new_pos;
   switch (dir) {
     case North:
@@ -151,11 +155,11 @@ bool TicTacToe::CheckForLegalPos(const Position& pos) const {
   return true;
 }
 
-bool TicTacToe::CheckForWin(const bool player) const {
+bool TicTacToe::CheckForWin(const bool& player) const {
   for (unsigned x = 0; x < matrix_.size(); ++x) {
     for (unsigned y = 0; y < matrix_.size(); ++y) {
       for (unsigned dir = 0; dir < 8; ++dir) {
-        if (CheckForWinRecursive(player, {x, y}, IndexToDirections(dir)) == matrix_.size()) {
+        if (CheckForWinRecursive(player, {x, y}, IndexToDirection(dir)) == matrix_.size()) {
           return true;
         }
       }
@@ -165,10 +169,10 @@ bool TicTacToe::CheckForWin(const bool player) const {
 }
 
 unsigned TicTacToe::CheckForWinRecursive(const bool& player, 
-const Position& pos, const Directions& dir) const {
+const Position& pos, const Direction& dir) const {
   Position new_pos = GetNewPos(pos, dir);
   // General Case
-  if ((CheckForLegalPos(new_pos)) && (BoolToValues(player) == GetValueOn(new_pos))) {
+  if ((CheckForLegalPos(new_pos)) && (BoolToValue(player) == GetValueOn(new_pos))) {
     return (1 + CheckForWinRecursive(player, new_pos, dir));
   }
   // Base Case

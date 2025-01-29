@@ -16,13 +16,13 @@
 #include <iostream>
 #include <string>
 
-enum class Values {
+enum class Value {
   Empty,
   X, // 1
   O  // 0
 };
 
-enum Directions {
+enum Direction {
   North,     // 0
   NorthWest, // 1
   West,      // 2
@@ -35,30 +35,30 @@ enum Directions {
 
 using Position = std::pair<int, int>;
 
-std::string ValuesToString(const Values& value);
-Values BoolToValues(const bool& var);
+std::string ValueToString(const Value& value);
+Value BoolToValue(const bool& var);
 
-Directions IndexToDirections(const unsigned& value);
+Direction IndexToDirection(const unsigned& value);
 
 class TicTacToe {
   public:
-    TicTacToe(const unsigned size = 3);
+    TicTacToe(const unsigned& size = 3);
     ~TicTacToe() {}
 
-    bool Run();
+    bool Run(const bool& first);
 
-    void Place(const bool player);
-    Values GetValueOn(const Position& pos) const;
+    void Place(const bool& player);
+    Value GetValueOn(const Position& pos) const;
     void Print() const;
 
   private:
-    std::vector<std::vector<Values>> matrix_;
+    std::vector<std::vector<Value>> matrix_;
     void Fill();
-    Position GetNewPos(const Position& pos, const Directions& dir) const;
+    Position GetNewPos(const Position& pos, const Direction& dir) const;
     bool CheckForLegalPos(const Position& pos) const;
-    bool CheckForWin(const bool player) const;
+    bool CheckForWin(const bool& player) const;
     unsigned CheckForWinRecursive(const bool& player, 
-      const Position& pos, const Directions& dir) const; 
+      const Position& pos, const Direction& dir) const; 
 };
 
 #endif
