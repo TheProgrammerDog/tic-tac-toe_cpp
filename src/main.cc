@@ -14,9 +14,12 @@
 
 int main (int argc, char** argv) {
   TicTacToe game(3);
-  game.Print();
   game.Place(0);
+  game.Place(0);
+  game.Place(0);
+  std::cout << std::endl;
+
   game.Print();
-  
+  std::cout << game.CheckForWin(0) << std::endl;
   return 0;
 }

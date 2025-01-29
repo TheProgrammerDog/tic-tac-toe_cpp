@@ -81,6 +81,7 @@ void TicTacToe::Place(const bool player) {
   std::cin >> y;
   //system("clear");
   matrix_[x][y] = BoolToValues(player);
+  std::cout << std::endl;
 }
 
 void TicTacToe::Print() const {
@@ -108,11 +109,11 @@ Position TicTacToe::GetNewPos(const Position& pos, const Directions& dir) const 
   Position new_pos;
   switch (dir) {
     case North:
-      new_pos.first = pos.first + 1;
+      new_pos.first = pos.first - 1;
       new_pos.second = pos.second;
       break;
     case NorthWest:
-      new_pos.first = pos.first + 1;
+      new_pos.first = pos.first - 1;
       new_pos.second = pos.second - 1; 
       break;
     case West:
@@ -120,15 +121,15 @@ Position TicTacToe::GetNewPos(const Position& pos, const Directions& dir) const 
       new_pos.second = pos.second - 1; 
       break;
     case SouthWest:
-      new_pos.first = pos.first - 1;
+      new_pos.first = pos.first + 1;
       new_pos.second = pos.second - 1; 
       break;
     case South:
-      new_pos.first = pos.first - 1;
+      new_pos.first = pos.first + 1;
       new_pos.second = pos.second; 
       break;
     case SouthEast:
-      new_pos.first = pos.first - 1;
+      new_pos.first = pos.first + 1;
       new_pos.second = pos.second + 1; 
       break;
     case East:
@@ -136,7 +137,7 @@ Position TicTacToe::GetNewPos(const Position& pos, const Directions& dir) const 
       new_pos.second = pos.second + 1; 
       break;
     default: // NorthEast
-      new_pos.first = pos.first + 1;
+      new_pos.first = pos.first - 1;
       new_pos.second = pos.second + 1; 
   }
   return new_pos;
@@ -150,10 +151,14 @@ bool TicTacToe::CheckForLegalPos(const Position& pos) const {
   return true;
 }
 
-bool TicTacToe::CheckForWin(const bool player, const Position& pos) const {
-  for (unsigned i = 0; i < 8; ++i) {
-    if (CheckForWinRecursive(player, pos, IndexToDirections(i)) == matrix_.size()) {
-      return true;
+bool TicTacToe::CheckForWin(const bool player) const {
+  for (unsigned x = 0; x < matrix_.size(); ++x) {
+    for (unsigned y = 0; y < matrix_.size(); ++y) {
+      for (unsigned dir = 0; dir < 8; ++dir) {
+        if (CheckForWinRecursive(player, {x, y}, IndexToDirections(dir)) == matrix_.size()) {
+          return true;
+        }
+      }
     }
   }
   return false;
@@ -167,5 +172,5 @@ const Position& pos, const Directions& dir) const {
     return (1 + CheckForWinRecursive(player, new_pos, dir));
   }
   // Base Case
-  return 0;
+  return 1;
 }
