@@ -8,7 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(SOURCES
-  src/vector_t.cc
+  src/tictactoe.cc
+  src/main.cc
 )
 
 add_executable(tic-tac-toe ${SOURCES})

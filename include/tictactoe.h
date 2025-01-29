@@ -14,22 +14,49 @@
 
 #include <vector>
 #include <iostream>
+#include <string>
 
-enum class VALUES {
-  EMPTY,
+enum class Values {
+  Empty,
   X,
   O
 };
 
-class TicTacToe : public std::vector<std::vector<VALUES>> {
+enum Directions {
+  North,
+  NorthWest,
+  West,
+  SouthWest,
+  South,
+  SouthEast,
+  East,
+  NorthEast
+};
+
+using position = std::pair<unsigned, unsigned>;
+
+std::string values_to_string(const Values value);
+
+Directions index_to_Directions(const unsigned value);
+
+class TicTacToe : public std::vector<std::vector<Values>> {
   public:
     TicTacToe(const unsigned size = 3);
     ~TicTacToe() {}
+
+    bool run();
 
     void place(const bool player);
     void print() const;
   private:
     void fill();
+
+    bool check_for_win(const bool player, const position pos) const;
+
+    unsigned check_for_win_recursive(const bool& player, 
+      const position pos, const Directions& dir) const;
+
+    position get_new_pos(const position pos, const Directions dir) const;
 };
 
 #endif
