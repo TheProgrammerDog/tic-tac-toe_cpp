@@ -4,8 +4,6 @@
  * @brief definition of the TicTacToe class and adjacent methods 
  * @version 0.1
  * @date 2025-01-29
- * 
- * 
  */
 
 #include "tictactoe.h"
@@ -244,7 +242,7 @@ bool TicTacToe::CheckForWin(const bool& player) const {
 unsigned TicTacToe::CheckForWinRecursive(const bool& player, 
 const Position& pos, const Direction& dir) const {
   Position new_pos = GetNewPos(pos, dir); // Get the next position
-  
+
   // General Case
   // Check if it is legal and if it was written by the player
   if (CheckForLegalPos(pos) && (GetValueOn(pos) == BoolToValue(player))) {

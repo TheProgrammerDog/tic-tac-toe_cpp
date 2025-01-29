@@ -4,8 +4,6 @@
  * @brief declaration of the TicTacToe class and adjacent methods 
  * @version 0.1
  * @date 2025-01-28
- * 
- * 
  */
 
 #ifndef TIC_TAC_TOE

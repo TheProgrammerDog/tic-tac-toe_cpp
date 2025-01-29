@@ -3,9 +3,7 @@
  * @author AnormalDog
  * @brief main file
  * @version 0.1
- * @date 2025-01-29
- * 
- * 
+ * @date 2025-01-29 
  */
 
 #include "tictactoe.h"
