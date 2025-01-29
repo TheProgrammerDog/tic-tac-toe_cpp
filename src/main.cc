@@ -13,9 +13,7 @@
 #include <iostream>
 
 int main (int argc, char** argv) {
-  TicTacToe game(4);
-  game.Print();
-  TicTacToe game2(5);
-  game2.Print();
+  TicTacToe game(3);
+  game.Run();
   return 0;
 }

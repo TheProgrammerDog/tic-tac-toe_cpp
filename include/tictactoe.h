@@ -42,12 +42,12 @@ Direction IndexToDirection(const unsigned& value);
 
 class TicTacToe {
   public:
-    TicTacToe(const unsigned& size = 3);
+    TicTacToe(const unsigned& size);
     ~TicTacToe() {}
 
-    bool Run(const bool& first);
+    bool Run(const bool& first = 0);
 
-    void Place(const bool& player);
+    void Turn(const bool& player);
     Value GetValueOn(const Position& pos) const;
     void Print() const;
 

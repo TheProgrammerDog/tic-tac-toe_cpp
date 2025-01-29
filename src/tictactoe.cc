@@ -70,19 +70,32 @@ TicTacToe::TicTacToe(const unsigned& size) {
   for (auto iter = matrix_.begin(); iter != matrix_.end(); ++iter) {
     iter->resize(size);
   }
-  Fill(Value::O);
-}
-
-bool TicTacToe::Run(const bool& player) {
   Fill();
 }
 
-void TicTacToe::Place(const bool& player) {
+bool TicTacToe::Run(const bool& player) {
   system("clear");
+  Fill();
+  bool turn = player;
+  while (true) {
+    Turn(turn);
+    if (CheckForWin(turn)) {
+      system("clear");
+      std::cout << "Player: " << player << " wins" << std::endl;
+      return turn;
+    }
+    turn = !turn;
+  }
+}
+
+void TicTacToe::Turn(const bool& player) {
   std::string x_raw, y_raw;
   bool correct_input {0};
   Position pos;
   while (correct_input == 0) {
+    Print();
+    std::cout << "Player: " << player << "(" 
+      << ValueToString(BoolToValue(player)) << ")" << " moves" << std::endl;
     std::cout << "Introduce x and y cord: ";
     std::cin >> x_raw >> y_raw;
     if (!CheckForValidInput(x_raw) || !CheckForValidInput(y_raw)) {
@@ -101,7 +114,7 @@ void TicTacToe::Place(const bool& player) {
       continue;
     }
   }
-
+  system("clear");
 }
 
 void TicTacToe::Print() const {
@@ -195,14 +208,19 @@ bool TicTacToe::CheckForValidInput(const std::string& entry) const {
 
 bool TicTacToe::CheckForWin(const bool& player) const {
   for (unsigned x = 0; x < matrix_.size(); ++x) {
+    if (!(x == 0 || x == matrix_.size() - 1)) continue;
     for (unsigned y = 0; y < matrix_.size(); ++y) {
+      if (GetValueOn({x, y}) != BoolToValue(player)) continue;
       for (unsigned dir = 0; dir < 8; ++dir) {
+        if (!(CheckForLegalPos(GetNewPos({x, y}, IndexToDirection(dir))))) continue;
+        std::cout << "iter" << std::endl;
         if (CheckForWinRecursive(player, {x, y}, IndexToDirection(dir)) == matrix_.size()) {
           return true;
         }
       }
     }
   }
+
   return false;
 }
 
@@ -210,9 +228,9 @@ unsigned TicTacToe::CheckForWinRecursive(const bool& player,
 const Position& pos, const Direction& dir) const {
   Position new_pos = GetNewPos(pos, dir);
   // General Case
-  if ((CheckForLegalPos(new_pos)) && (BoolToValue(player) == GetValueOn(new_pos))) {
+  if (CheckForLegalPos(pos) && (GetValueOn(pos) == BoolToValue(player))) {
     return (1 + CheckForWinRecursive(player, new_pos, dir));
   }
   // Base Case
-  return 1;
+    return 0;
 }
