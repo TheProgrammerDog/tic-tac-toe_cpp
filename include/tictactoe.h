@@ -18,45 +18,47 @@
 
 enum class Values {
   Empty,
-  X,
-  O
+  X, // 1
+  O  // 0
 };
 
 enum Directions {
-  North,
-  NorthWest,
-  West,
-  SouthWest,
-  South,
-  SouthEast,
-  East,
-  NorthEast
+  North,     // 0
+  NorthWest, // 1
+  West,      // 2
+  SouthWest, // 3
+  South,     // 4
+  SouthEast, // 5
+  East,      // 6
+  NorthEast  // 7
 };
 
-using position = std::pair<unsigned, unsigned>;
+using Position = std::pair<int, int>;
 
-std::string values_to_string(const Values value);
+std::string ValuesToString(const Values& value);
+Values BoolToValues(const bool& var);
 
-Directions index_to_Directions(const unsigned value);
+Directions IndexToDirections(const unsigned& value);
 
-class TicTacToe : public std::vector<std::vector<Values>> {
+class TicTacToe {
   public:
     TicTacToe(const unsigned size = 3);
     ~TicTacToe() {}
 
-    bool run();
+    bool Run();
 
-    void place(const bool player);
-    void print() const;
+    void Place(const bool player);
+    Values GetValueOn(const Position& pos) const;
+    void Print() const;
   private:
-    void fill();
+    std::vector<std::vector<Values>> matrix_;
 
-    bool check_for_win(const bool player, const position pos) const;
-
-    unsigned check_for_win_recursive(const bool& player, 
-      const position pos, const Directions& dir) const;
-
-    position get_new_pos(const position pos, const Directions dir) const;
+    void Fill();
+    Position GetNewPos(const Position& pos, const Directions& dir) const;
+    bool CheckForLegalPos(const Position& pos) const;
+    bool CheckForWin(const bool player, const Position& pos) const;
+    unsigned CheckForWinRecursive(const bool& player, 
+      const Position& pos, const Directions& dir) const;
 };
 
 #endif
