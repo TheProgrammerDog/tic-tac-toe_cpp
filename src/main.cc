@@ -1,17 +1,23 @@
 /**
  * @file main.cc
- * @author your name (you@domain.com)
- * @brief 
+ * @author AnormalDog
+ * @brief main file
  * @version 0.1
  * @date 2025-01-29
  * 
- * @copyright Copyright (c) 2025
  * 
  */
 
 #include "tictactoe.h"
 #include <iostream>
 
+/**
+ * @brief main function of the program
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
 int main (int argc, char** argv) {
   TicTacToe game(3);
   game.Run();

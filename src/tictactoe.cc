@@ -1,11 +1,10 @@
 /**
  * @file tictactoe.cc
- * @author your name (you@domain.com)
- * @brief 
+ * @author AnormalDog
+ * @brief definition of the TicTacToe class and adjacent methods 
  * @version 0.1
- * @date 2025-01-28
+ * @date 2025-01-29
  * 
- * @copyright Copyright (c) 2025
  * 
  */
 
@@ -64,6 +63,15 @@ Direction IndexToDirection(const unsigned& value) {
   }
 }
 
+// Default is 3
+TicTacToe::TicTacToe() { 
+  matrix_.resize(3);
+  for (auto iter = matrix_.begin(); iter != matrix_.end(); ++iter) {
+    iter->resize(3);
+  }
+  Fill();
+}
+
 TicTacToe::TicTacToe(const unsigned& size) {
   assert (size > 0 && size < 10);
   matrix_.resize(size);
@@ -82,9 +90,9 @@ bool TicTacToe::Run(const bool& player) {
     if (CheckForWin(turn)) {
       system("clear");
       std::cout << "Player: " << player << " wins" << std::endl;
-      return turn;
+      return turn; // returns who wins
     }
-    turn = !turn;
+    turn = !turn; // Change turn
   }
 }
 
@@ -92,19 +100,24 @@ void TicTacToe::Turn(const bool& player) {
   std::string x_raw, y_raw;
   bool correct_input {0};
   Position pos;
+  // Until a correct input
   while (correct_input == 0) {
     Print();
     std::cout << "Player: " << player << "(" 
-      << ValueToString(BoolToValue(player)) << ")" << " moves" << std::endl;
+      << ValueToString(BoolToValue(player)) << ")" << " turn" << std::endl;
     std::cout << "Introduce x and y cord: ";
     std::cin >> x_raw >> y_raw;
+    // Checks if the input is syntactically correct
     if (!CheckForValidInput(x_raw) || !CheckForValidInput(y_raw)) {
       std::cout << "invalid input, try again" << std::endl;
       continue;
     }
+    // From char to unsigned
     unsigned x = static_cast<unsigned>(x_raw[0] - 48);
     unsigned y = static_cast<unsigned>(y_raw[0] - 48);
     pos = {x, y};
+    
+    // Check if the input is inside the matrix
     if (CheckForLegalPos(pos)) {
       correct_input = 1;
       matrix_[x][y] = BoolToValue(player);
@@ -192,6 +205,7 @@ Position TicTacToe::GetNewPos(const Position& pos, const Direction& dir) const {
 }
 
 bool TicTacToe::CheckForLegalPos(const Position& pos) const {
+  // Check the reverse, if is not valid
   if (pos.first >= matrix_.size() || pos.second >= matrix_.size() || 
   pos.first < 0 || pos.second < 0) {
     return false;
@@ -200,6 +214,7 @@ bool TicTacToe::CheckForLegalPos(const Position& pos) const {
 }
 
 bool TicTacToe::CheckForValidInput(const std::string& entry) const {
+  // Check the size == 1 and it's a number
   if (entry.size() == 1 && (entry[0] >=48 && entry[0] <= 57)) {
     return true;
   }
@@ -208,29 +223,34 @@ bool TicTacToe::CheckForValidInput(const std::string& entry) const {
 
 bool TicTacToe::CheckForWin(const bool& player) const {
   for (unsigned x = 0; x < matrix_.size(); ++x) {
+    // Only checks the limits of the matrix
     if (!(x == 0 || x == matrix_.size() - 1)) continue;
     for (unsigned y = 0; y < matrix_.size(); ++y) {
+      // Only check the position who already was written by the player
       if (GetValueOn({x, y}) != BoolToValue(player)) continue;
       for (unsigned dir = 0; dir < 8; ++dir) {
+        // Only those directions who next position is legal
         if (!(CheckForLegalPos(GetNewPos({x, y}, IndexToDirection(dir))))) continue;
-        std::cout << "iter" << std::endl;
+        // Must reach the same size of the matrix
         if (CheckForWinRecursive(player, {x, y}, IndexToDirection(dir)) == matrix_.size()) {
           return true;
         }
       }
     }
   }
-
   return false;
 }
 
 unsigned TicTacToe::CheckForWinRecursive(const bool& player, 
 const Position& pos, const Direction& dir) const {
-  Position new_pos = GetNewPos(pos, dir);
+  Position new_pos = GetNewPos(pos, dir); // Get the next position
+  
   // General Case
+  // Check if it is legal and if it was written by the player
   if (CheckForLegalPos(pos) && (GetValueOn(pos) == BoolToValue(player))) {
     return (1 + CheckForWinRecursive(player, new_pos, dir));
   }
+
   // Base Case
-    return 0;
+  return 0;
 }
