@@ -84,7 +84,7 @@ bool TicTacToe::Run(const bool& player) {
   Fill();
   bool turn = player;
   unsigned turn_number {0};
-  while (true) {
+  while (true) { 
     Turn(turn, turn_number);
     if (CheckForWin(turn)) {
       system("clear");
@@ -233,16 +233,10 @@ bool TicTacToe::CheckForValidInput(const std::string& entry) const {
 }
 
 bool TicTacToe::CheckForWin(const bool& player) const {
+  std::cout << player << std::endl;
   for (unsigned x = 0; x < matrix_.size(); ++x) {
-    // Only checks the limits of the matrix
-    if (!(x == 0 || x == matrix_.size() - 1)) continue;
-    for (unsigned y = 0; y < matrix_.size(); ++y) {
-      // Only check the position who already was written by the player
-      if (GetValueOn({x, y}) != BoolToValue(player)) continue;
+     for (unsigned y = 0; y < matrix_.size(); ++y) {
       for (unsigned dir = 0; dir < 8; ++dir) {
-        // Only those directions who next position is legal
-        if (!(CheckForLegalPos(GetNewPos({x, y}, IndexToDirection(dir))))) continue;
-        // Must reach the same size of the matrix
         if (CheckForWinRecursive(player, {x, y}, IndexToDirection(dir)) == matrix_.size()) {
           return true;
         }
