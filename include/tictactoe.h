@@ -80,17 +80,17 @@ Direction IndexToDirection(const unsigned& value);
 class TicTacToe {
   public:
 
-  /**
-   * @brief Construct a new Tic Tac Toe object
-   * 
-   */
-  TicTacToe();
-  /**
-   * @brief Construct a new Tic Tac Toe object
-   * With variable size
-   * 
-   * @param size 
-   */
+    /**
+     * @brief Construct a new Tic Tac Toe object
+     * 
+     */
+    TicTacToe();
+    /**
+     * @brief Construct a new Tic Tac Toe object
+     * With variable size
+     * 
+     * @param size 
+     */
     TicTacToe(const unsigned& size);
 
     /**
@@ -108,14 +108,14 @@ class TicTacToe {
      */
     bool Run(const bool& first = 0);
 
-  /**
-   * @brief Do a turn for a player
-   * Take the input
-   * Writes it on the matrix
-   * 
-   * @param player 
-   * @param turn_number 
-   */
+    /**
+     * @brief Do a turn for a player
+     * Take the input
+     * Writes it on the matrix
+     * 
+     * @param player 
+     * @param turn_number 
+     */
     void Turn(const bool& player, const unsigned& turn_number);
 
     /**
