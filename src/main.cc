@@ -17,7 +17,7 @@
  * @return int 
  */
 int main (int argc, char** argv) {
-  TicTacToe game(3);
+  TicTacToe game(6);
   game.Run();
   return 0;
 }
